@@ -1,0 +1,317 @@
+<template>
+    <h1 style="text-align: center;">VISUAL WEAVER</h1>
+    <!-- VISUAL WEAVER EDITOR -->
+    <textarea name="visual-weaver" class="hide" id="visual-weaver">
+
+        <script>
+            toolbar = {
+                "orientation": "horizontal",
+                "style": ["bold", "italic", "underline", "clear"],
+                "font": ["strikethrough", "superscript", "subscript"],
+                "fontsize": ["fontsize"],
+                "color": ["color"],
+                "para": ["ul", "ol", "paragraph"],
+                "height": ["height"],
+                "mode": ["airmode"],
+                "theme": ["secondary"],
+                "iconSize": ["fontSize-10px", "fontPadding-8px"],
+                "height": ["minimum", "standard", "maximum", "full"]
+            }
+        </script>
+
+    </textarea>
+
+    <aside class="visual-weaver">
+
+
+        <!-- TOOLS -->
+        <div class="editor-head" id="editor-head" target-mode="default" target-theme="default">
+
+            <!-- TEXT FACES -->
+            <div class="text-face toolbar">
+                <!-- BOLD -->
+                <button type="button" class="vwbtn vwbtn-default bold" id="bold" tabindex="-1"
+                    aria-label="Bold (CTRL+B)" data-original-title="Bold (CTRL+B)"><i class="m-bold"></i></button>
+                <!-- ITALIC -->
+                <button type="button" class="vwbtn vwbtn-default italic " id="italic" tabindex="-1"
+                    aria-label="Italic (CTRL+I)" data-original-title="Italic (CTRL+I)"><i class="m-italic"></i></button>
+                <!-- UNDERLINE -->
+                <button type="button" class="vwbtn vwbtn-default underline" id="underline" tabindex="-1"
+                    aria-label="Underline (CTRL+U)" data-original-title="Underline (CTRL+U)"><i
+                        class="m-underline"></i></button>
+                <!-- ERASE STYLES -->
+                <button type="button" class="vwbtn vwbtn-default erase-style" id="erase-style" tabindex="-1"
+                    aria-label="Erase Styles (CTRL+/)" data-original-title="Erase Styles (CTRL+/)"><i
+                        class="m-eraser"></i></button>
+            </div>
+
+
+
+            <!-- TEXT SIZER & FAMILY -->
+            <div class="text-sizer-family toolbar">
+                <!-- FONT SIZER -->
+                <select name="fontSize" id="fontSize" class="vwbtn vwbtn-default extent-width" tabindex="-1"
+                    aria-label="Font Size (CTRL+P)" data-original-title="Font Size (CTRL+P)">
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16" selected>16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                </select>
+                <!-- FONT SIZER -->
+                <select name="fontFamily" id="fontFamily" class="vwbtn vwbtn-default extent-2x-width" tabindex="-1"
+                    aria-label="Font Family (CTRL+F)" data-original-title="Font Family (CTRL+F)">
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Arial">Arial</option>
+                    <option value="K2D">K2D</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans">Open Sans</option>
+                    <option value="Lato">Lato</option>
+                    <option value="Montserrat">Montserrat</option>
+                    <option value="Poppins">Poppins</option>
+                    <option value="Nunito Sans">Nunito Sans</option>
+                    <option value="Merriweather">Merriweather</option>
+                    <option value="Playfair Display">Playfair Display</option>
+                    <option value="Lora">Lora</option>
+                    <option value="SolaimanLipi" selected>SolaimanLipi</option>
+                    <option value="Kalpurush">Kalpurush</option>
+                    <option value="Sutonny">Sutonny</option>
+                    <option value="Baloo Da">Baloo Da</option>
+                    <option value="BenSen">BenSen</option>
+                    <option value="BenSen Handwriting">BenSen Handwriting</option>
+                </select>
+
+            </div>
+
+
+
+            <!-- TEXT ALIGNMENTS -->
+            <div class="text-alignments toolbar">
+                <!-- LEFT ALIGNMENT -->
+                <button type="button" class="vwbtn vwbtn-default left-align" id="left-align" tabindex="-1"
+                    aria-label="Left-align (CTRL+L)" data-original-title="Left-align (CTRL+L)"><i
+                        class="m-m-text-left"></i></button>
+                <!-- CENTER ALIGNMENT -->
+                <button type="button" class="vwbtn vwbtn-default center-align" id="center-align" tabindex="-1"
+                    aria-label="Center-align (CTRL+E)" data-original-title="Center-align (CTRL+E)"><i
+                        class="m-m-text-center"></i></button>
+                <!-- RIGHT ALIGNMENT -->
+                <button type="button" class="vwbtn vwbtn-default right-align" id="right-align" tabindex="-1"
+                    aria-label="Right-align (CTRL+R)" data-original-title="Right-align (CTRL+R)"><i
+                        class="m-m-text-right"></i></button>
+                <!-- JUSTIFY ALIGNMENT -->
+                <button type="button" class="vwbtn vwbtn-default justify-align" id="justify-align" tabindex="-1"
+                    aria-label="Justify-align (CTRL+J)" data-original-title="Justify-align (CTRL+J)"><i
+                        class="m-align-justify" style="font-size: 1.2rem;"></i></button>
+                <!-- INDENT -->
+                <button type="button" class="vwbtn vwbtn-default indent" id="indent" tabindex="-1"
+                    aria-label="Indent (CTRL+[)" data-original-title="Indent (CTRL+[)"><i
+                        class="m-indent-increase"></i></button>
+                <!-- OUTDENT -->
+                <button type="button" class="vwbtn vwbtn-default outdent" id="outdent" tabindex="-1"
+                    aria-label="Outdent (CTRL+])" data-original-title="Outdent (CTRL+])"><i
+                        class="m-indent-decrease"></i></button>
+            </div>
+
+
+            <!-- TEXT COLORS -->
+            <div class="text-colors toolbar">
+                <!-- FONT COLOR -->
+                <button type="button" class="vwbtn vwbtn-default font-color" id="font-color" tabindex="-1"
+                    aria-label="Font Color (CTRL+SHIFT+F)" data-original-title="Font Color (CTRL+SHIFT+F)"><i
+                        class="m-text-color" style="color: red;"></i></button>
+                <!-- BACKGROUND COLOR -->
+                <button type="button" class="vwbtn vwbtn-default background-color" id="background-color" tabindex="-1"
+                    aria-label="Background Color (CTRL+SHIFT+B)" data-original-title="Background Color (CTRL+SHIFT+B)"
+                    style="background-color: #fdff97;"><i class="m-palette"></i></button>
+            </div>
+
+            <!-- ORDER LIST -->
+            <div class="text-lists toolbar">
+                <!-- DISC BULLET -->
+                <button type="button" class="vwbtn vwbtn-default disc-bullet" id="disc-bullet" tabindex="-1"
+                    aria-label="Disc Bullet (CTRL+SHIFT+C)" data-original-title="Disc Bullet (CTRL+SHIFT+C)"><i
+                        class="m-list2"></i></button>
+                <!-- SQUARE BULLET -->
+                <button type="button" class="vwbtn vwbtn-default square-bullet" id="square-bullet" tabindex="-1"
+                    aria-label="Square Bullet (CTRL+SHIFT+S)" data-original-title="Square Bullet (CTRL+SHIFT+S)"><i
+                        class="m-list"></i></button>
+                <!-- DECIMAL BULLET -->
+                <button type="button" class="vwbtn vwbtn-default decimal-bullet" id="decimal-bullet" tabindex="-1"
+                    aria-label="Decimal Bullet (CTRL+SHIFT+D)" data-original-title="Decimal Bullet (CTRL+SHIFT+D)"><i
+                        class="m-list-numbered"></i></button>
+            </div>
+
+            <!-- TABLE MAKER -->
+            <div class="text-table toolbar">
+                <!-- TABLE -->
+                <section class="popup-view">
+                    <button type="button" class="vwbtn vwbtn-default table-maker" id="table-maker" tabindex="-1"
+                        aria-label="Create Table" data-original-title="Create Table"><i class="m-table2"></i></button>
+
+                    <!-- TABLE POPUP -->
+                    <div class="table-inputs hidei" id="table-inputs">
+                        <input type="number" placeholder="Row" min="0" step="1">
+                        <input type="number" placeholder="Col" min="0" step="1">
+                        <button type="button" class="btn btn-primary">Add</button>
+                    </div>
+                </section>
+
+                <button type="button" class="vwbtn vwbtn-default quote-sign z-1" id="quote-sign" tabindex="-1"
+                    aria-label="Quote (CTRL+SHIFT+Q)" data-original-title="Quote (CTRL+SHIFT+Q)"><i
+                        class="m-quote1"></i></button>
+            </div>
+
+
+            <!-- FILES LOAD -->
+            <div class="files-load toolbar">
+                <!-- LINK ANCHOR TAG -->
+                <button type="button" class="vwbtn vwbtn-default anchor-tag" id="anchor-tag" tabindex="-1"
+                    aria-label="Anchor Tag (CTRL+ALT+L)" data-original-title="Anchor Tag (CTRL+ALT+L)"
+                    onclick="openModal('modal1')"><i class="m-link"></i></button>
+                <!-- IMAGE -->
+                <button type="button" class="vwbtn vwbtn-default image-file" id="image-file" tabindex="-1"
+                    aria-label="Add Image (CTRL+ALT+I)" data-original-title="Add Image (CTRL+ALT+I)"
+                    onclick="openModal('modal2')"><i class="m-image"></i></button>
+                <!-- YOUTUBE VIDEO -->
+                <button type="button" class="vwbtn vwbtn-default youtube-video" id="youtube-video" tabindex="-1"
+                    aria-label="Add Youtube Video (CTRL+ALT+V)" data-original-title="Add Youtube Video (CTRL+ALT+V)"
+                    onclick="openModal('modal3')"><i class="m-youtube3"></i></button>
+            </div>
+
+            <!-- ACCESIBILITIES -->
+            <div class="accessibilities toolbar">
+                <!-- FULL SCREEN -->
+                <button type="button" class="vwbtn vwbtn-default full-screen" id="full-screen" tabindex="-1"
+                    aria-label="Full Screen (CTRL+M)" data-original-title="Full Screen (CTRL+M)"
+                    onclick="fullscreen()"><i class="m-fullscreen"></i></button>
+                <!-- CODE VIEW -->
+                <button type="button" class="vwbtn vwbtn-default code-view" id="code-view" tabindex="-1"
+                    aria-label="Code View (CTRL+,)" data-original-title="Code View (CTRL+,)"><i
+                        class="m-code1"></i></button>
+                <!-- GET HELP -->
+                <button type="button" class="vwbtn vwbtn-default get-help" id="get-help" tabindex="-1"
+                    aria-label="Get Help (CTRL+?)" data-original-title="Get Help (CTRL+?)"><i
+                        class="m-question-mark"></i></button>
+            </div>
+
+        </div>
+        <section class="relative">
+            <div class="editor-body editor-section h-vh-50" id="editor-body" contenteditable="true" spellcheck="false">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae omnis esse, ad voluptate modi
+                quidem
+                officiis amet! Maiores modi nostrum veniam ullam dolor repudiandae exercitationem quae quod. Eos, atque
+                laudantium.
+            </div>
+            <div class="resizer-editor"></div>
+        </section>
+    </aside>
+
+    <section>
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <!-- ANCHOR TAG LINK -->
+        <div class="modal" id="modal1">
+            <div class="f f-just-between pad-b--10">
+                <h2>Insert Link</h2>
+                <span class="close-btn" onclick="closeModal('modal1')"><i class="m-cross1"></i></span>
+            </div>
+            <div class="border-bottom"></div>
+            <!-- MAIN CONTENT -->
+            <div class="modal-main-contents">
+                <div class="text-input" id="text-input">
+                    <label for="text">Text to Display</label>
+                    <input type="text" class="inputbox">
+                </div>
+                <div class="text-input" id="text-input">
+                    <label for="text">URL Link</label>
+                    <input type="text" class="inputbox">
+                </div>
+                <button class="btn btn-alert w--60">Add</button>
+            </div>
+
+            <section>
+
+            </section>
+        </div>
+
+        <!-- ADD IMAGE -->
+        <div class="modal" id="modal2">
+            <div class="f f-just-between pad-b--10">
+                <h2>Insert Image</h2>
+                <span class="close-btn" onclick="closeModal('modal2')"><i class="m-cross1"></i></span>
+            </div>
+            <div class="border-bottom"></div>
+            <!-- MAIN CONTENT -->
+            <div class="preview-img preview" id="preview-img"></div>
+            <div class="modal-main-contents">
+                <div class="f f-col w-100 f-just-start gap-10">
+                    <label for="text">Upload Image File <span class="Red">(only jpg or png)</span></label>
+                    <div class="input-file">
+                        <span>Select an Image File...</span>
+                        <input type="file" class="inputbox" accept=".jpg, .png, .jpeg" multiple>
+                    </div>
+                    <div class="text-left">OR,</div>
+                </div>
+                <div class="text-input" id="text-input">
+                    <label for="text">URL Link</label>
+                    <input type="text" class="inputbox">
+                </div>
+                <button class="btn btn-alert w--60">Add</button>
+            </div>
+
+        </div>
+
+
+        <!-- YOUTUBE -->
+        <div class="modal" id="modal3">
+            <div class="f f-just-between pad-b--10">
+                <h2>Insert Youtube Video</h2>
+                <span class="close-btn" onclick="closeModal('modal3')"><i class="m-cross1"></i></span>
+            </div>
+            <div class="border-bottom"></div>
+            <!-- MAIN CONTENT -->
+            <!-- PREVIEW -->
+            <div class="preview-youtube preview" id="preview-youtube">
+                <!-- https://www.youtube.com/embed/8uKgqqK2v4s?si=2UDoU80vrjH2ByG8 -->
+                <iframe class="hide" width="360" height="215" src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="modal-main-contents">
+                <div class="f f-col w-100 f-just-start gap-10">
+                    <div class="text-input" id="text-input">
+                        <label for="text">URL Link</label>
+                        <input type="text" class="inputbox">
+                    </div>
+                    <span class="Gray"><u>Note:</u> Youtube Link Like <b
+                            class="Red">https://youtu.be/8uKgqqK2v4s?si=hXwVk9BHYZFNzgWS</b><br> You can find this
+                        link within video share button</span>
+
+                </div>
+                <button class="btn btn-alert w--60">Add</button>
+            </div>
+        </div>
+    </section>
+
+</template>
+
+<style lang="scss">
+@use '@/assets/styles/editor.scss' as *;
+</style>
