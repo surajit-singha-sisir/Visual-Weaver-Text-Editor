@@ -1,5 +1,54 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+
+  app: {
+    head: {
+      // Meta tags
+      meta: [
+        { charset: 'UTF-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+        { name: 'description', content: 'Visual Weaver Web Text Editor - A free and open-source WYSIWYG editor for the web.' },
+        { name: 'keywords', content: 'Visual Weaver, open source, WYSIWYG, web text editor, rich text editor, web editor' },
+        { name: 'author', content: 'Surajit Singha Sisir, Anirban Singha' }, // Developers
+        { name: 'robots', content: 'index, follow' }, 
+        { name: 'theme-color', content: '#ffffff' }, 
+
+        // Open Graph Meta Tags
+        { property: 'og:title', content: 'Visual Weaver Web Text Editor' },
+        { property: 'og:description', content: 'Visual Weaver Web Text Editor - A free and open-source WYSIWYG editor for the web.' },
+        { property: 'og:image', content: 'https://visualweaver.vercel.app/path-to-image.jpg' },
+        { property: 'og:url', content: 'https://visualweaver.vercel.app' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:locale', content: 'en_US' },
+
+        // Twitter Meta Tags
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@your_twitter_handle' },
+        { name: 'twitter:title', content: 'Visual Weaver Web Text Editor' },
+        { name: 'twitter:description', content: 'Visual Weaver Web Text Editor - A free and open-source WYSIWYG editor for the web.' },
+        { name: 'twitter:image', content: 'https://visualweaver.vercel.app/path-to-image.jpg' },
+
+        // Developer and Team Info
+        { name: 'developer', content: 'Surajit Singha Sisir, Anirban Singha' }, // Developer names
+        { name: 'developer-team', content: 'Kehem IT' }, // Developer team
+        { name: 'dev-platform', content: 'React, Vue, Django, CDN' }, // Technologies used
+        { name: 'developer-website', content: 'https://kehem.com' }, // Developer website link
+      ],
+
+      // Title of the page
+      title: 'Visual Weaver Web Text Editor', 
+
+      // External CSS
+      link: [
+        { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/gh/surajit-singha-sisir/mastorsCDN@v1.1.01/mastors.css' },
+        { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/gh/surajit-singha-sisir/mastorsCDN@v1.1/mastorsIcons/mastorsIcons.css' },
+      ],
+
+      // External JS (with `type="module"` as specified)
+      script: [
+        { type: 'module', src: 'https://cdn.jsdelivr.net/gh/surajit-singha-sisir/mastorsCDN@v1.1.01/mastors.js' }
+      ],
+    }
+  },
 })

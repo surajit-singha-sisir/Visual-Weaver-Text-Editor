@@ -314,4 +314,12 @@
 
 <style lang="scss">
 @use '@/assets/styles/editor.scss' as *;
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+}
 </style>
