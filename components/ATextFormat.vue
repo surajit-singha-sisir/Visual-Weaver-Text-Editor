@@ -1,32 +1,3 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import { useEditor, EditorContent } from '@tiptap/vue-3';
-import StarterKit from '@tiptap/starter-kit';
-
-// Initialize the editor
-const editor = useEditor({
-    content: '<p>Hello, start editing...</p>',
-    extensions: [StarterKit],
-});
-
-onMounted(() => {
-    document.getElementById('bold').addEventListener('click', () => {
-        editor.value.chain().focus().toggleBold().run();
-    });
-
-    document.getElementById('italic').addEventListener('click', () => {
-        editor.value.chain().focus().toggleItalic().run();
-    });
-
-    document.getElementById('underline').addEventListener('click', () => {
-        editor.value.chain().focus().toggleUnderline().run();
-    });
-
-    document.getElementById('erase-style').addEventListener('click', () => {
-        editor.value.chain().focus().clearNodes().unsetAllMarks().run();
-    });
-});
-</script>
 
 <template>
     <!-- TEXT FACES -->
@@ -48,3 +19,4 @@ onMounted(() => {
     </div>
     
 </template>
+

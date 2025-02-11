@@ -105,6 +105,8 @@ select {
         background-color: $bg-default;
         box-shadow: 4px 4px 8px 0px $border;
         font-size: $fontSize;
+        border: none;
+        outline: none;
         padding: $iconPadding;
 
         &:focus {
