@@ -40,6 +40,16 @@
                         class="vwbtn vwbtn-default underline" id="underline" tabindex="-1"
                         aria-label="Underline (CTRL+U)" data-original-title="Underline (CTRL+U)" @click="underline"><i
                             class="m-underline"></i></button>
+                    <!-- SUPERSCRIPT -->
+                    <button :class="{ 'pressed': editor?.isActive('superscript') }" type="button"
+                        class="vwbtn vwbtn-default superscript" id="superscript" tabindex="-1"
+                        aria-label="Supperscript (CTRL+.)" data-original-title="Supperscript (CTRL+.)"
+                        @click="superscript"><i class="m-superscript"></i></button>
+                    <!-- SUBSCRIPT -->
+                    <button :class="{ 'pressed': editor?.isActive('subscript') }" type="button"
+                        class="vwbtn vwbtn-default subscript" id="subscript" tabindex="-1"
+                        aria-label="Subscript (CTRL+,)" data-original-title="Subscript (CTRL+,)" @click="subscript"><i
+                            class="m-subscript"></i></button>
                     <!-- STRIKE THROUGH -->
                     <button :class="{ 'pressed': editor?.isActive('strike') }" type="button"
                         class="vwbtn vwbtn-default strikethrough" id="strikethrough" tabindex="-1"
@@ -55,7 +65,6 @@
                         aria-label="Erase Styles (CTRL+/)" data-original-title="Erase Styles (CTRL+/)"
                         @click="eraseStyle"><i class="m-eraser"></i></button>
                 </div>
-
 
 
                 <!-- TEXT SIZER & FAMILY -->
@@ -121,29 +130,25 @@
                 <!-- TEXT ALIGNMENTS -->
                 <div class="text-alignments toolbar">
                     <!-- LEFT ALIGNMENT -->
-                    <button type="button" class="vwbtn vwbtn-default left-align" id="left-align" tabindex="-1"
-                        aria-label="Left-align (CTRL+L)" data-original-title="Left-align (CTRL+L)"><i
+                    <button :class="{ 'pressed': editor?.isActive('left') }" @click="alignLeft" type="button"
+                        class="vwbtn vwbtn-default left-align" id="left-align" tabindex="-1"
+                        aria-label="Left-align (CTRL+SHIFT+L)" data-original-title="Left-align (CTRL+SHIFT+L)"><i
                             class="m-m-text-left"></i></button>
                     <!-- CENTER ALIGNMENT -->
-                    <button type="button" class="vwbtn vwbtn-default center-align" id="center-align" tabindex="-1"
-                        aria-label="Center-align (CTRL+E)" data-original-title="Center-align (CTRL+E)"><i
+                    <button :class="{ 'pressed': editor?.isActive('center') }" @click="alignCenter" type="button"
+                        class="vwbtn vwbtn-default center-align" id="center-align" tabindex="-1"
+                        aria-label="Center-align (CTRL+SHIFT+E)" data-original-title="Center-align (CTRL+SHIFT+E)"><i
                             class="m-m-text-center"></i></button>
                     <!-- RIGHT ALIGNMENT -->
-                    <button type="button" class="vwbtn vwbtn-default right-align" id="right-align" tabindex="-1"
-                        aria-label="Right-align (CTRL+R)" data-original-title="Right-align (CTRL+R)"><i
+                    <button :class="{ 'pressed': editor?.isActive('right') }" @click="alignRight" type="button"
+                        class="vwbtn vwbtn-default right-align" id="right-align" tabindex="-1"
+                        aria-label="Right-align (CTRL+SHIFT+R)" data-original-title="Right-align (CTRL+SHIFT+R)"><i
                             class="m-m-text-right"></i></button>
                     <!-- JUSTIFY ALIGNMENT -->
-                    <button type="button" class="vwbtn vwbtn-default justify-align" id="justify-align" tabindex="-1"
-                        aria-label="Justify-align (CTRL+J)" data-original-title="Justify-align (CTRL+J)"><i
+                    <button :class="{ 'pressed': editor?.isActive('justify') }" @click="alignJustify" type="button"
+                        class="vwbtn vwbtn-default justify-align" id="justify-align" tabindex="-1"
+                        aria-label="Justify-align (CTRL+SHIFT+J)" data-original-title="Justify-align (CTRL+SHIFT+J)"><i
                             class="m-align-justify" style="font-size: 1.2rem;"></i></button>
-                    <!-- INDENT -->
-                    <button type="button" class="vwbtn vwbtn-default indent" id="indent" tabindex="-1"
-                        aria-label="Indent (CTRL+[)" data-original-title="Indent (CTRL+[)"><i
-                            class="m-indent-increase"></i></button>
-                    <!-- OUTDENT -->
-                    <button type="button" class="vwbtn vwbtn-default outdent" id="outdent" tabindex="-1"
-                        aria-label="Outdent (CTRL+])" data-original-title="Outdent (CTRL+])"><i
-                            class="m-indent-decrease"></i></button>
                 </div>
 
 
@@ -200,6 +205,9 @@ import Underline from '@tiptap/extension-underline';
 import TextStyle from '@tiptap/extension-text-style';
 import Highlight from '@tiptap/extension-highlight';
 import FontFamily from '@tiptap/extension-font-family';
+import TextAlign from '@tiptap/extension-text-align';
+import Superscript from '@tiptap/extension-superscript';
+import Subscript from '@tiptap/extension-subscript';
 
 const editor = useEditor({
     content: '<p>Hello, start editing...</p>',
@@ -209,20 +217,42 @@ const editor = useEditor({
         TextStyle,
         Highlight,
         FontFamily,
+        TextAlign.configure({
+            types: ['heading', 'paragraph'],
+        }),
+        Superscript,
+        Subscript,
     ],
 });
 
 
 
+const alignLeft = () => {
+    if (editor.value) {
+        editor.value.chain().focus().setTextAlign('left').run();
+    }
+}
+const alignCenter = () => {
+    if (editor.value) {
+        editor.value.chain().focus().setTextAlign('center').run();
+    }
+}
+const alignRight = () => {
+    if (editor.value) {
+        editor.value.chain().focus().setTextAlign('right').run();
+    }
+}
+const alignJustify = () => {
+    if (editor.value) {
+        editor.value.chain().focus().setTextAlign('justify').run();
+    }
+}
+
 
 
 // TEXT RESIZER AND FAMILY
-
 const selectedFontSize = ref("default"); // or any valid default size
 const selectedFontFamily = ref("default"); // Default font family
-
-
-
 // SET FONT FAMILY
 const changeFontFamily = () => {
     if (editor.value) {
@@ -232,7 +262,6 @@ const changeFontFamily = () => {
         }, 3000);
     }
 };
-
 
 // SET FONT SIZE
 const getFontSize = () => {
@@ -287,6 +316,18 @@ const italic = () => {
 const underline = () => {
     if (editor.value) {
         editor.value.chain().focus().toggleUnderline().run();
+    }
+};
+// SUPERSCRIPT
+const superscript = () => {
+    if (editor.value) {
+        editor.value.chain().focus().setSuperscript().run();
+    }
+};
+// SUBSCRIPT
+const subscript = () => {
+    if (editor.value) {
+        editor.value.chain().focus().setSubscript().run();
     }
 };
 // STRIKE THROUGH
