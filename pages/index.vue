@@ -238,7 +238,8 @@
                 <!-- MEDIA LOAD -->
                 <div class="files-load toolbar">
                     <!-- LINK ANCHOR TAG -->
-                    <button type="button" class="vwbtn vwbtn-default anchor-tag" id="anchor-tag" tabindex="-1"
+                    <button :class="{ 'is-active': editor?.isActive('link') }" type="button"
+                        class="vwbtn vwbtn-default anchor-tag" id="anchor-tag" tabindex="-1"
                         aria-label="Anchor Tag (CTRL+ALT+L)" data-original-title="Anchor Tag (CTRL+ALT+L)"
                         @click="openModal('modal1')">
                         <i class="m-link"></i>
@@ -252,6 +253,8 @@
                     </button>
 
                     <!-- YOUTUBE VIDEO -->
+
+                    <!-- :class="{ 'pressed': editor?.isActive('bold') }" -->
                     <button type="button" class="vwbtn vwbtn-default youtube-video" id="youtube-video" tabindex="-1"
                         aria-label="Add Youtube Video (CTRL+ALT+V)" data-original-title="Add Youtube Video (CTRL+ALT+V)"
                         @click="openModal('modal3')">
@@ -272,7 +275,6 @@
                         <div class="border-bottom"></div>
                         <!-- MAIN CONTENT -->
                         <div class="modal-main-contents">
-                            <input type="text" v-model="linkText" class="inputbox" placeholder="Text to Display" />
                             <input type="text" v-model="linkUrl" class="inputbox" placeholder="URL Link" />
                             <button class=" bg-Alert w--60" @click="addLink">Add</button>
                         </div>
@@ -450,6 +452,9 @@ import TableRow from '@tiptap/extension-table-row'
 import Text from '@tiptap/extension-text'
 import Blockquote from '@tiptap/extension-blockquote'
 import Modals from '~/components/Modals.vue';
+import Link from '@tiptap/extension-link'
+import Image from '@tiptap/extension-image'
+import Youtube from '@tiptap/extension-youtube'
 
 const editor = useEditor({
     content: '<p>Hello, start editing...</p>',
@@ -475,6 +480,9 @@ const editor = useEditor({
         TableHeader,
         TableCell,
         Blockquote,
+        Link,
+        Image.configure({ allowBase64: true, inline: true, HTMLAttributes: { class: 'w-vw-50'} }),
+        Youtube
     ],
 });
 
@@ -779,7 +787,6 @@ const eraseStyle = () => {
 
 const modalActive = ref(false);
 const activeModal = ref<string | null>(null);
-const linkText = ref('');
 const linkUrl = ref('');
 const imageUrl = ref('');
 const youtubeUrl = ref('');
@@ -787,7 +794,6 @@ const youtubeUrl = ref('');
 const openModal = (modalId: string) => {
     activeModal.value = modalId;
     modalActive.value = true;
-    linkText.value = '';
     linkUrl.value = '';
     imageUrl.value = '';
     youtubeUrl.value = '';
@@ -801,13 +807,76 @@ const closeModal = () => {
 };
 
 const addLink = () => {
+    const link = linkUrl.value;
+    if (editor.value) {
+        editor.value
+            .chain()
+            .focus()
+            .toggleLink({ href: link, class: 'vwLink' })
+            .run();
+    }
     closeModal();
 };
 
+
+// This is the Vue method that will handle image insertion based on the input
 const addImage = () => {
-    console.log('Image Added:', { imageUrl: imageUrl.value });
-    closeModal();
+    // 1. Handle the image file upload
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = fileInput?.files?.[0]; // Retrieve the first selected file
+
+    if (file) {
+        // File selected, process it as a base64 image
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const base64Image = e.target?.result as string;
+            console.log("✅ Base64 Image Generated:", base64Image);
+
+            if (!editor.value) {
+                console.log("❌ Editor not initialized");
+                return;
+            }
+
+            // Insert base64 image into Tiptap editor
+            editor.value.chain().focus().setImage({ src: base64Image }).run();
+            console.log("✅ Image inserted into the editor");
+        };
+
+        reader.onerror = () => {
+            console.log("❌ FileReader Error");
+        };
+
+        // Read the image as base64
+        reader.readAsDataURL(file);
+        return; // If a file is selected, exit here to prevent URL processing
+    }
+
+    // 2. Handle the image URL input (if no file is selected)
+    const url = imageUrl.value.trim();
+    if (url) {
+        if (!editor.value) {
+            console.log("❌ Editor not initialized");
+            return;
+        }
+
+        // Insert image URL into Tiptap editor
+        editor.value.chain().focus().setImage({ src: url }).run();
+    } else {
+        console.log("❌ No file or URL provided");
+    }
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 const addYouTube = () => {
     console.log('YouTube Video Added:', { youtubeUrl: youtubeUrl.value });
@@ -839,6 +908,7 @@ const handleImageUpload = (event: Event) => {
         }
     }
 };
+
 const updateImagePreview = () => {
     imageSrc.value = imageUrl.value;
 };

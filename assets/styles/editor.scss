@@ -68,7 +68,11 @@ select {
   cursor: pointer;
   background-color: $button-alert !important;
 }
-
+.vwLink {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: #3ba1f5;
+}
 // DEFAULTS
 
 .visual-weaver {
