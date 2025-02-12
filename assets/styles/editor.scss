@@ -81,6 +81,7 @@ select {
     gap: 1rem;
 
     .toolbar {
+      position: relative;
       display: flex;
       border: $all-border;
 
