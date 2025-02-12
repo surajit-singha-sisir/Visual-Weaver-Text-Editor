@@ -150,34 +150,101 @@
 
                 <!-- TEXT COLORS -->
                 <div class="text-colors toolbar">
-                    <!-- COLOR PALETTE -->
+
                     <!-- FONT COLOR -->
                     <button :class="{ 'pressed': editor?.isActive('color') }" type="button"
                         class="vwbtn vwbtn-default fontColor" id="fontColor" tabindex="-1" aria-label="Font Color"
-                        data-original-title="Font Color" @click="fontColor"><i class="m-text-color"></i></button>
-                    <!-- FONT COLOR -->
+                        data-original-title="Font Color" @click="toggleFontColorModal">
+                        <i class="m-text-color"></i>
+                    </button>
+
+                    <div class="fontColorModal colorModal" :class="{ hidei: !isFontColorModalVisible }"
+                        ref="fontColorModal">
+                        <button class="w-100 m-b--05" aria-label="Pick a Color"
+                            data-original-title="Pick a Color"><input type="color" @input="onFontColorChange($event)"
+                                class="w-100 b-none"></button>
+                        <button v-for="color in colors" :key="color.name" class="color-box btn"
+                            :style="`background-color: ${color.code};`" :aria-label="color.name"
+                            :data-original-title="color.name"> </button>
+                    </div>
+
+                    <!-- BACKGROUND COLOR -->
                     <button :class="{ 'pressed': editor?.isActive('color') }" type="button"
                         class="vwbtn vwbtn-default backgroundColor" id="backgroundColor" tabindex="-1"
-                        aria-label="Background Color" data-original-title="Background Color" @click="backgroundColor"><i
-                            class="m-palette"></i></button>
+                        aria-label="background Color" data-original-title="background Color"
+                        @click="toggleBackgroundColorModal">
+                        <i class="m-palette"></i>
+                    </button>
 
-
-                    <div class="colorModal hidei" ref="colorModal">
-                        <button class="w-100 m-b--05" ref="colorBanner"></button>
-                        <button v-for="color in colors" class="color-box btn"
-                            :style="`background-color: ${color.code} ;`" :aria-label="color.name"
-                            :data-original-title="color.name"></button>
+                    <div class="fontColorModal colorModal" :class="{ hidei: !isBackgroundColorModalVisible }"
+                        ref="backgroundColorModal">
+                        <button class="w-100 m-b--05" ref="BackgroundColorBanner">Background Color</button>
+                        <button v-for="color in colors" :key="color.name" class="color-box btn"
+                            :style="`background-color: ${color.code};`" :aria-label="color.name"
+                            :data-original-title="color.name">
+                        </button>
                     </div>
+
+
 
                 </div>
 
 
-                <!-- BACKGROUND COLOR PALETTE -->
-                <!-- <div class="background-color-palette">
-                        <button v-for="color in bgColors" :key="color" :style="{ backgroundColor: color }"
-                            @click="setBackgroundColor(color)" class="color-btn"
-                            :aria-label="'Background Color: ' + color"></button>
-                    </div> -->
+                <!-- ORDER LIST -->
+                <div class="text-lists toolbar">
+
+                    <!-- DISC BULLET -->
+                    <button :class="{ 'pressed': editor?.isActive('toggleBulletList') }" @click="discBullet"
+                        type="button" class="vwbtn vwbtn-default disc-bullet" id="disc-bullet" tabindex="-1"
+                        aria-label="Disc Bullet (CTRL+SHIFT+C)" data-original-title="Disc Bullet (CTRL+SHIFT+C)"><i
+                            class="m-list2"></i></button>
+                    <!-- SQUARE BULLET (BETA) -->
+                    <!-- <button :class="{ 'pressed': editor?.isActive('toggleBulletList') }" @click="squareBullet" type="button" class="vwbtn vwbtn-default square-bullet" id="square-bullet" tabindex="-1"
+                        aria-label="Square Bullet (CTRL+SHIFT+S)" data-original-title="Square Bullet (CTRL+SHIFT+S)"><i
+                            class="m-list"></i></button> -->
+                    <!-- DECIMAL BULLET -->
+                    <button :class="{ 'pressed': editor?.isActive('toggleBulletList') }" @click="numberBullet"
+                        type="button" class="vwbtn vwbtn-default decimal-bullet" id="decimal-bullet" tabindex="-1"
+                        aria-label="Decimal Bullet (CTRL+SHIFT+D)"
+                        data-original-title="Decimal Bullet (CTRL+SHIFT+D)"><i class="m-list-numbered"></i></button>
+                </div>
+
+
+                <!-- TABLE MAKER -->
+                <div class="text-table toolbar">
+
+
+                    <button :class="{ 'pressed': editor?.isActive('bold') }" type="button"
+                        class="vwbtn vwbtn-default bold" id="bold" tabindex="-1" aria-label="Bold (CTRL+B)"
+                        data-original-title="Bold (CTRL+B)" @click="bold"><i class="m-bold"></i></button>
+
+
+                    <!-- TABLE -->
+                    <section class="popup-view">
+                        <button :class="{ 'pressed': editor?.isActive('bold') }" @click="toggleTableVisibility"
+                            type="button" class="vwbtn vwbtn-default table-maker" id="table-maker" tabindex="-1"
+                            aria-label="Create Table" data-original-title="Create Table"><i
+                                class="m-table2"></i></button>
+
+                        <!-- TABLE POPUP -->
+                        <div :class="{ hidei: !isTableVisible }" ref="addTable" class="table-inputs">
+                            <input type="number" placeholder="Row" min="0" step="1">
+                            <input type="number" placeholder="Col" min="0" step="1">
+                            <button type="button" class="btn btn-primary">Add</button>
+                        </div>
+                    </section>
+
+                    <button type="button" class="vwbtn vwbtn-default quote-sign z-1" id="quote-sign" tabindex="-1"
+                        aria-label="Quote (CTRL+SHIFT+Q)" data-original-title="Quote (CTRL+SHIFT+Q)"><i
+                            class="m-quote1"></i></button>
+                </div>
+
+
+
+
+
+
+
             </div>
             <editor-content :editor="editor" class="editor editor-body editor-section" />
         </aside>
@@ -251,6 +318,19 @@ body {
     text-align: center;
     box-shadow: 2px 2px 3px #00000033;
 }
+
+.colorModal {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    /* Prevent interaction when hidden */
+}
+
+/* Show the modal when active */
+.colorModal:not(.hidei) {
+    opacity: 1;
+    pointer-events: auto;
+}
 </style>
 
 
@@ -265,7 +345,14 @@ import FontFamily from '@tiptap/extension-font-family';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import Subscript from '@tiptap/extension-subscript';
-import { Color } from '@tiptap/extension-color'
+import { Color } from '@tiptap/extension-color';
+import Gapcursor from '@tiptap/extension-gapcursor'
+import Paragraph from '@tiptap/extension-paragraph'
+import Table from '@tiptap/extension-table'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableRow from '@tiptap/extension-table-row'
+import Text from '@tiptap/extension-text'
 
 const editor = useEditor({
     content: '<p>Hello, start editing...</p>',
@@ -281,11 +368,47 @@ const editor = useEditor({
         Superscript,
         Subscript,
         Color,
+        Paragraph,
+        Text,
+        Gapcursor,
+        Table.configure({
+            resizable: true,
+        }),
+        TableRow,
+        TableHeader,
+        TableCell,
     ],
 });
 
 
-// List of colors for font and background
+
+
+
+// DISC BULLET
+const discBullet = () => {
+    if (editor.value) {
+        editor.value.chain().focus().toggleBulletList().run();
+    }
+}
+// SQUARE BULLET (BETA)
+const squareBullet = () => {
+    if (editor.value) {
+        editor.value.chain().focus().toggleBulletList().run();
+    }
+}
+// NUMBER BULLET
+const numberBullet = () => {
+    if (editor.value) {
+        editor.value.chain().focus().toggleOrderedList().run();
+    }
+}
+
+
+
+
+
+
+
 const colors =
     [
         { "code": "#FFFFFF", "name": "White" },
@@ -370,16 +493,60 @@ const colors =
         { "code": "#4682B4", "name": "Steel Blue" },
         { "code": "#5F9EA0", "name": "Cadet Blue" }
     ];
+const isFontColorModalVisible = ref(false);
+const isBackgroundColorModalVisible = ref(false);
 
-const colorModal = ref<HTMLElement | null>(null);
-const fontColor = () => {
-    colorModal.value?.classList.toggle("hidei");
-}
-const backgroundColor = () => {
-    colorModal.value?.classList.toggle("hidei");
-}
+const toggleFontColorModal = () => {
+    isFontColorModalVisible.value = !isFontColorModalVisible.value;
+    if (isFontColorModalVisible.value) {
+        isBackgroundColorModalVisible.value = false;
+    }
+};
+const toggleBackgroundColorModal = () => {
+    isBackgroundColorModalVisible.value = !isBackgroundColorModalVisible.value;
+    if (isBackgroundColorModalVisible.value) {
+        isFontColorModalVisible.value = false;
+    }
+};
+const isTableVisible = ref(false);
 
+const toggleTableVisibility = () => {
+    isTableVisible.value = !isTableVisible.value;
+};
+const closeOnOutsideClick = (event: MouseEvent) => {
+    const fontColorModal = document.querySelector('.fontColorModal') as HTMLElement;
+    const backgroundColorModal = document.querySelector('.colorModal') as HTMLElement;
+    const fontColorButton = document.querySelector('#fontColor') as HTMLElement;
+    const backgroundColorButton = document.querySelector('#backgroundColor') as HTMLElement;
+    const tableModal = document.querySelector('.table-inputs') as HTMLElement;
+    const tableButton = document.querySelector('#table-maker') as HTMLElement;
 
+    // Close Font Color Modal if clicked outside
+    if (fontColorModal && !fontColorModal.contains(event.target as Node) && !fontColorButton.contains(event.target as Node)) {
+        isFontColorModalVisible.value = false;
+    }
+
+    // Close Background Color Modal if clicked outside
+    if (backgroundColorModal && !backgroundColorModal.contains(event.target as Node) && !backgroundColorButton.contains(event.target as Node)) {
+        isBackgroundColorModalVisible.value = false;
+    }
+
+    // Close Table Modal if clicked outside
+    if (tableModal && !tableModal.contains(event.target as Node) && !tableButton.contains(event.target as Node)) {
+        isTableVisible.value = false;
+    }
+};
+
+const onFontColorChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    const color = input.value;
+    if (editor.value) {
+        editor.value.chain().focus().setColor(color).run();
+    }
+};
+
+const fontColorModal = ref<HTMLElement | null>(null);
+const backgroundColorModal = ref<HTMLElement | null>(null);
 
 // Set font color
 const setFontColor = (color: string) => {
@@ -520,15 +687,54 @@ const eraseStyle = () => {
     }
 };
 
-
-
+const addTable = ref<HTMLElement | null>(null);
 
 onMounted(() => {
     tooltips();
     resizer();
+    document.addEventListener('click', closeOnOutsideClick);
 
+
+    const colorBox = fontColorModal.value?.querySelectorAll<HTMLElement>(".color-box");
+    colorBox?.forEach(color => {
+        color.addEventListener("click", () => {
+            editor.value?.chain().focus().setColor(color.style.backgroundColor).run();
+        })
+    })
+
+    // FOR FURTHER DEVELOPMENT (BETA)
+    const colorBox2 = backgroundColorModal.value?.querySelectorAll<HTMLElement>(".color-box");
+    colorBox2?.forEach(color => {
+        color.addEventListener("click", () => {
+            editor.value?.chain()
+                .focus()
+                .setNode('paragraph', { backgroundColor: 'red' })
+                .run();
+        });
+    });
+
+
+    const tableAdd = addTable.value?.querySelector("button[type=button]");
+    tableAdd?.addEventListener("click", () => {
+        const rowCols = addTable.value?.querySelectorAll("input[type=number]");
+        if (rowCols && rowCols.length >= 2) {
+            const row = Number((rowCols[0] as HTMLInputElement).value);
+            const col = Number((rowCols[1] as HTMLInputElement).value);
+
+            // Ensure the values are numbers and not NaN
+            if (!isNaN(row) && !isNaN(col)) {
+                editor.value?.chain().focus().insertTable({ rows: row, cols: col, withHeaderRow: true }).run();
+            } else {
+                console.error("Invalid input for rows or columns.");
+            }
+        } else {
+            console.error("Row and column input fields are missing or insufficient.");
+        }
+    });
 });
-
+onUnmounted(() => {
+    document.removeEventListener('click', closeOnOutsideClick);
+});
 
 const toolbar = {
     "orientation": "horizontal",

@@ -11,8 +11,8 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Visual Weaver Web Text Editor - A free and open-source WYSIWYG editor for the web.' },
         { name: 'keywords', content: 'Visual Weaver, open source, WYSIWYG, web text editor, rich text editor, web editor' },
         { name: 'author', content: 'Surajit Singha Sisir, Anirban Singha' }, // Developers
-        { name: 'robots', content: 'index, follow' }, 
-        { name: 'theme-color', content: '#ffffff' }, 
+        { name: 'robots', content: 'index, follow' },
+        { name: 'theme-color', content: '#ffffff' },
 
         // Open Graph Meta Tags
         { property: 'og:title', content: 'Visual Weaver Web Text Editor' },
@@ -37,7 +37,7 @@ export default defineNuxtConfig({
       ],
 
       // Title of the page
-      title: 'Visual Weaver Web Text Editor', 
+      title: 'Visual Weaver Web Text Editor',
 
       // External CSS
       link: [
@@ -50,5 +50,9 @@ export default defineNuxtConfig({
         { type: 'module', src: 'https://cdn.jsdelivr.net/gh/surajit-singha-sisir/mastorsCDN@v1.1.01/mastors.js' }
       ],
     }
+  },
+  devServer: {
+    host: '0.0.0.0',
+    port: 3000
   },
 })
