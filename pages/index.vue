@@ -213,12 +213,6 @@
                 <!-- TABLE MAKER -->
                 <div class="text-table toolbar">
 
-
-                    <button :class="{ 'pressed': editor?.isActive('bold') }" type="button"
-                        class="vwbtn vwbtn-default bold" id="bold" tabindex="-1" aria-label="Bold (CTRL+B)"
-                        data-original-title="Bold (CTRL+B)" @click="bold"><i class="m-bold"></i></button>
-
-
                     <!-- TABLE -->
                     <section class="popup-view">
                         <button :class="{ 'pressed': editor?.isActive('bold') }" @click="toggleTableVisibility"
@@ -234,21 +228,122 @@
                         </div>
                     </section>
 
-                    <button type="button" class="vwbtn vwbtn-default quote-sign z-1" id="quote-sign" tabindex="-1"
-                        aria-label="Quote (CTRL+SHIFT+Q)" data-original-title="Quote (CTRL+SHIFT+Q)"><i
+                    <button :class="{ 'pressed': editor?.isActive('blockquote') }" @click="quote" type="button"
+                        class="vwbtn vwbtn-default quote-sign z-1" id="quote-sign" tabindex="-1"
+                        aria-label="Quote (CTRL+SHIFT+B)" data-original-title="Quote (CTRL+SHIFT+B)"><i
                             class="m-quote1"></i></button>
                 </div>
 
 
+                <!-- MEDIA LOAD -->
+                <div class="files-load toolbar">
+                    <!-- LINK ANCHOR TAG -->
+                    <button type="button" class="vwbtn vwbtn-default anchor-tag" id="anchor-tag" tabindex="-1"
+                        aria-label="Anchor Tag (CTRL+ALT+L)" data-original-title="Anchor Tag (CTRL+ALT+L)"
+                        @click="openModal('modal1')">
+                        <i class="m-link"></i>
+                    </button>
 
+                    <!-- IMAGE -->
+                    <button type="button" class="vwbtn vwbtn-default image-file" id="image-file" tabindex="-1"
+                        aria-label="Add Image (CTRL+ALT+I)" data-original-title="Add Image (CTRL+ALT+I)"
+                        @click="openModal('modal2')">
+                        <i class="m-image"></i>
+                    </button>
 
+                    <!-- YOUTUBE VIDEO -->
+                    <button type="button" class="vwbtn vwbtn-default youtube-video" id="youtube-video" tabindex="-1"
+                        aria-label="Add Youtube Video (CTRL+ALT+V)" data-original-title="Add Youtube Video (CTRL+ALT+V)"
+                        @click="openModal('modal3')">
+                        <i class="m-youtube3"></i>
+                    </button>
 
+                    <!-- Modal Overlay -->
+                    <div v-if="modalActive" class="modal-overlay" @click="closeModal"></div>
 
+                    <!-- ANCHOR TAG LINK -->
+                    <div v-if="activeModal === 'modal1'" class="modal active">
+                        <div class="f f-just-between pad-b--10">
+                            <h2>Insert Link</h2>
+                            <span class="close-btn" @click="closeModal">
+                                <i class="m-cross1"></i>
+                            </span>
+                        </div>
+                        <div class="border-bottom"></div>
+                        <!-- MAIN CONTENT -->
+                        <div class="modal-main-contents">
+                            <input type="text" v-model="linkText" class="inputbox" placeholder="Text to Display" />
+                            <input type="text" v-model="linkUrl" class="inputbox" placeholder="URL Link" />
+                            <button class=" bg-Alert w--60" @click="addLink">Add</button>
+                        </div>
+                    </div>
 
+                    <!-- ADD IMAGE -->
+                    <div v-if="activeModal === 'modal2'" class="modal active">
+                        <div class="f f-just-between pad-b--10">
+                            <h2>Insert Image</h2>
+                            <span class="close-btn" @click="closeModal">
+                                <i class="m-cross1"></i>
+                            </span>
+                        </div>
+                        <div class="border-bottom"></div>
+                        <!-- MAIN CONTENT -->
+                        <div class="preview-img preview" id="preview-img">
+                            <img v-if="imageSrc" :src="imageSrc" alt="Image Preview" />
+                        </div>
+                        <div class="modal-main-contents">
+                            <div class="f f-col w-100 f-just-start gap-10">
+                                <label for="text">Upload Image File <span class="Red">(only jpg or png)</span></label>
+                                <div class="input-file">
+                                    <span ref="fileNameRef">Select an Image File...</span>
+                                    <input type="file" class="inputbox" accept=".jpg, .png, .jpeg" multiple
+                                        @change="handleImageUpload" />
+                                </div>
+                                <div class="text-left">OR,</div>
+                            </div>
+                            <input type="text" v-model="imageUrl" class="inputbox" placeholder="URL Link"
+                                @input="updateImagePreview" />
+
+                            <button class="bg-Alert w--60" @click="addImage">Add</button>
+                        </div>
+                    </div>
+
+                    <!-- YOUTUBE -->
+                    <div v-if="activeModal === 'modal3'" class="modal active">
+                        <div class="f f-just-between pad-b--10">
+                            <h2>Insert Youtube Video</h2>
+                            <span class="close-btn" @click="closeModal">
+                                <i class="m-cross1"></i>
+                            </span>
+                        </div>
+                        <div class="border-bottom"></div>
+                        <!-- MAIN CONTENT -->
+                        <div class="preview-youtube preview" id="preview-youtube">
+                            <iframe v-if="youtubeUrl" :src="generateEmbedUrl(youtubeUrl)" width="360" height="215"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="modal-main-contents">
+                            <div class="f f-col w-100 f-just-start gap-10">
+                                <input type="text" v-model="youtubeUrl" class="inputbox" placeholder="URL Link" />
+                                <span class="Gray">
+                                    <u>Note:</u> YouTube Link Like <b
+                                        class="Red">https://youtu.be/8uKgqqK2v4s?si=hXwVk9BHYZFNzgWS</b><br />
+                                    You can find this link within the video share button
+                                </span>
+                            </div>
+                            <button class=" bg-Alert w--60" @click="addYouTube">Add</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+
             <editor-content :editor="editor" class="editor editor-body editor-section" />
         </aside>
-
 
         <Modals />
     </main>
@@ -353,6 +448,8 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import Text from '@tiptap/extension-text'
+import Blockquote from '@tiptap/extension-blockquote'
+import Modals from '~/components/Modals.vue';
 
 const editor = useEditor({
     content: '<p>Hello, start editing...</p>',
@@ -377,6 +474,7 @@ const editor = useEditor({
         TableRow,
         TableHeader,
         TableCell,
+        Blockquote,
     ],
 });
 
@@ -548,20 +646,6 @@ const onFontColorChange = (event: Event) => {
 const fontColorModal = ref<HTMLElement | null>(null);
 const backgroundColorModal = ref<HTMLElement | null>(null);
 
-// Set font color
-const setFontColor = (color: string) => {
-    if (editor.value) {
-        editor.value.chain().focus().setColor(color).run();
-    }
-};
-
-// Set background color
-const setBackgroundColor = (color: string) => {
-    if (editor.value) {
-        // editor.value.chain().focus().setBackgroundColor(color).run();
-    }
-};
-
 
 const alignLeft = () => {
     if (editor.value) {
@@ -611,7 +695,12 @@ const getFontSize = () => {
 
 
 
-
+// BLOCKQUOTE
+const quote = () => {
+    if (editor.value) {
+        editor.value.chain().focus().toggleBlockquote().run();
+    }
+}
 
 
 
@@ -686,6 +775,92 @@ const eraseStyle = () => {
         editor.value.chain().focus().unsetAllMarks().run();
     }
 };
+
+
+const modalActive = ref(false);
+const activeModal = ref<string | null>(null);
+const linkText = ref('');
+const linkUrl = ref('');
+const imageUrl = ref('');
+const youtubeUrl = ref('');
+
+const openModal = (modalId: string) => {
+    activeModal.value = modalId;
+    modalActive.value = true;
+    linkText.value = '';
+    linkUrl.value = '';
+    imageUrl.value = '';
+    youtubeUrl.value = '';
+    imageSrc.value = '';
+};
+
+const closeModal = () => {
+    modalActive.value = false;
+    activeModal.value = null;
+
+};
+
+const addLink = () => {
+    closeModal();
+};
+
+const addImage = () => {
+    console.log('Image Added:', { imageUrl: imageUrl.value });
+    closeModal();
+};
+
+const addYouTube = () => {
+    console.log('YouTube Video Added:', { youtubeUrl: youtubeUrl.value });
+    closeModal();
+};
+
+
+
+
+
+
+const imageSrc = ref<string | null>(null);
+const fileNameRef = ref<HTMLElement | null>(null);
+
+const handleImageUpload = (event: Event) => {
+    const input = event.target as HTMLInputElement | null;
+    if (input?.files?.length) {
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            imageSrc.value = reader.result as string;
+        };
+
+        reader.readAsDataURL(file);
+
+        if (fileNameRef.value) {
+            fileNameRef.value.textContent = file.name;
+        }
+    }
+};
+const updateImagePreview = () => {
+    imageSrc.value = imageUrl.value;
+};
+
+
+
+
+const getYouTubeId = (url: string): string | null => {
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:[^\/\n\s]+\/\S+|(?:v|e(?:mbed)?)\/))([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+};
+
+const generateEmbedUrl = (url: string): string => {
+    const videoId = getYouTubeId(url);
+    if (!videoId) return '';
+
+    const queryParams = url.split('?')[1] || '';
+
+    return `https://www.youtube.com/embed/${videoId}?${queryParams}&autoplay=1`;
+};
+
+
 
 const addTable = ref<HTMLElement | null>(null);
 
