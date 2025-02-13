@@ -1,6 +1,11 @@
 <template>
     <main>
-        <h1 style="text-align: center;">VISUAL WEAVER</h1>
+        <div class="k2d f w-100 pad-tb--20">
+            <h1 style="font-size: 2rem; border: 1px solid #3ba1f5;" class="w-100 text-center pad--10">VISUAL WEAVER
+                <p class="text--12 Gray">An Open-source Web wysiwyg editor</p>
+            </h1>
+
+        </div>
         <!-- VISUAL WEAVER EDITOR -->
         <!-- <textarea name="visual-weaver" class="hide" id="visual-weaver" aria-label="Visual Weaver">
     </textarea> -->
@@ -384,7 +389,7 @@
 
 
 
-            <editor-content :editor="editor" class="editor editor-body editor-section" />
+            <editor-content :editor="editor" class="editor editor-body editor-section m-b--50" />
             <!-- Code View Section -->
             <div v-if="isCodeView">
                 <div class="editor editor-body editor-section" rows="10" cols="50">
@@ -395,8 +400,9 @@
                 </div>
             </div>
         </aside>
-
-        <!-- <Modals /> -->
+        <footer class="footer w-100 f-centered pad--10 bg-Teal fixed White pos-bottom-center">
+            <div>Copyrights &copy; 2025 | Developed by <a class="btn btn-love Yellow" href="https://kehem.com">KEHEM IT</a></div>
+        </footer>
     </main>
 </template>
 
@@ -409,6 +415,10 @@ body {
     width: 100%;
     height: auto;
     box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+    scrollbar-width: none;
 }
 
 .editor-body {
@@ -424,6 +434,7 @@ body {
         }
     }
 }
+
 
 .combo-option {
     position: relative;
