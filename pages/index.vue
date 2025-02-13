@@ -152,7 +152,7 @@
                 <div class="text-colors toolbar">
 
                     <!-- FONT COLOR -->
-                    <button :class="{ 'pressed': editor?.isActive('color') }" type="button"
+                    <button :class="{ 'pressed': editor?.isActive('textStyle', { color: '#958DF1' }) }" type="button"
                         class="vwbtn vwbtn-default fontColor" id="fontColor" tabindex="-1" aria-label="Font Color"
                         data-original-title="Font Color" @click="toggleFontColorModal">
                         <i class="m-text-color"></i>
@@ -215,7 +215,7 @@
 
                     <!-- TABLE -->
                     <section class="popup-view">
-                        <button :class="{ 'pressed': editor?.isActive('bold') }" @click="toggleTableVisibility"
+                        <button :class="{ 'pressed': editor?.isActive('table') }" @click="toggleTableVisibility"
                             type="button" class="vwbtn vwbtn-default table-maker" id="table-maker" tabindex="-1"
                             aria-label="Create Table" data-original-title="Create Table"><i
                                 class="m-table2"></i></button>
@@ -321,8 +321,8 @@
                         <div class="border-bottom"></div>
                         <!-- MAIN CONTENT -->
                         <div class="preview-youtube preview" id="preview-youtube">
-                            <iframe v-if="youtubeUrl" :src="generateEmbedUrl(youtubeUrl)" width="360" height="215"
-                                frameborder="0"
+                            <iframe v-if="youtubeUrl" ref="generateEmbedUrlNew" :src="generateEmbedUrl(youtubeUrl)"
+                                width="360" height="215" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                             </iframe>
@@ -340,14 +340,63 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+                <!-- ACCESIBILITIES -->
+                <div class="accessibilities toolbar">
+                    <!-- FULL SCREEN -->
+                    <button type="button" class="vwbtn vwbtn-default full-screen" id="full-screen" tabindex="-1"
+                        aria-label="Full Screen" data-original-title="Full Screen | Esc to Exit" ref="pressed1"
+                        @click="toggleFullscreen">
+                        <i class="m-fullscreen"></i>
+                    </button>
+                    <!-- CODE VIEW -->
+                    <!-- <button type="button" class="vwbtn vwbtn-default code-view" id="code-view" tabindex="-1"
+                        aria-label="Code View (CTRL+,)" data-original-title="Code View (CTRL+,)" ref="pressed2"><i
+                            class="m-code1"></i></button> -->
+
+
+                    <!-- <div v-if="isCodeView">
+                        <pre>{{ htmlContent }}</pre>
+                    </div>
+                    <div v-else>
+                        <div class="editor-content">
+                            {{ htmlContent }}
+                        </div>
+                    </div> -->
+
+                    <button type="button" class="vwbtn vwbtn-default code-view" id="code-view" tabindex="-1"
+                        aria-label="Code View (CTRL+,) " data-original-title="Code View (CTRL+,)"
+                        @click="toggleCodeView">
+                        <i class="m-code1"></i>
+                    </button>
+
+
+                    <!-- GET HELP -->
+                    <button type="button" class="vwbtn vwbtn-default get-help" id="get-help" tabindex="-1"
+                        aria-label="Get Help (CTRL+?)" data-original-title="Get Help (CTRL+?)" ref="pressed3"><i
+                            class="m-question-mark"></i></button>
+                </div>
             </div>
 
 
 
             <editor-content :editor="editor" class="editor editor-body editor-section" />
+            <!-- Code View Section -->
+            <div v-if="isCodeView">
+                <div class="editor editor-body editor-section" rows="10" cols="50">
+                    <div ref="htmlContent" contenteditable="true" role="textbox" translate="no"
+                        class="tiptap ProseMirror" tabindex="0">
+
+                    </div>
+                </div>
+            </div>
         </aside>
 
-        <Modals />
+        <!-- <Modals /> -->
     </main>
 </template>
 
@@ -443,18 +492,15 @@ import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import Subscript from '@tiptap/extension-subscript';
 import { Color } from '@tiptap/extension-color';
-import Gapcursor from '@tiptap/extension-gapcursor'
-import Paragraph from '@tiptap/extension-paragraph'
+
 import Table from '@tiptap/extension-table'
 import TableCell from '@tiptap/extension-table-cell'
-import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
-import Text from '@tiptap/extension-text'
-import Blockquote from '@tiptap/extension-blockquote'
-import Modals from '~/components/Modals.vue';
-import Link from '@tiptap/extension-link'
-import Image from '@tiptap/extension-image'
-import Youtube from '@tiptap/extension-youtube'
+import TableHeader from '@tiptap/extension-table-header'
+import Link from '@tiptap/extension-link';
+import { YoutubeResize } from '@anilkumarthakur/tiptap-extension-resize-youtube';
+import ImageResize from 'tiptap-extension-resize-image';
+
 
 const editor = useEditor({
     content: '<p>Hello, start editing...</p>',
@@ -470,24 +516,44 @@ const editor = useEditor({
         Superscript,
         Subscript,
         Color,
-        Paragraph,
-        Text,
-        Gapcursor,
         Table.configure({
             resizable: true,
         }),
         TableRow,
         TableHeader,
         TableCell,
-        Blockquote,
         Link,
-        Image.configure({ allowBase64: true, inline: true, HTMLAttributes: { class: 'w-vw-50'} }),
-        Youtube
+        YoutubeResize.configure({
+            controls: true,
+            nocookie: true,
+            width: 320,
+            height: 240,
+            allowFullscreen: true,
+            autoplay: false,
+        }),
+        ImageResize,
     ],
 });
 
 
+const isCodeView = ref(false);
+const htmlContent = ref<string | null>(null);
+const maineditor = ref();
 
+const toggleCodeView = () => {
+    maineditor.value.classList.toggle("hidei");
+    isCodeView.value = !isCodeView.value;
+
+    if (isCodeView.value) {
+        htmlContent.value = editor.value?.getHTML() || '';
+        console.log('HTML Content:', htmlContent.value);
+    } else {
+        maineditor.value?.classList.toggle("hidei");
+        if (htmlContent.value) {
+            editor.value?.commands.setContent(htmlContent.value);
+        }
+    }
+};
 
 
 // DISC BULLET
@@ -819,39 +885,34 @@ const addLink = () => {
 };
 
 
-// This is the Vue method that will handle image insertion based on the input
+// ADD IMAGE
 const addImage = () => {
-    // 1. Handle the image file upload
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    const file = fileInput?.files?.[0]; // Retrieve the first selected file
+    const file = fileInput?.files?.[0];
 
+    closeModal();
     if (file) {
         // File selected, process it as a base64 image
         const reader = new FileReader();
         reader.onload = (e) => {
             const base64Image = e.target?.result as string;
-            console.log("✅ Base64 Image Generated:", base64Image);
 
             if (!editor.value) {
                 console.log("❌ Editor not initialized");
                 return;
             }
 
-            // Insert base64 image into Tiptap editor
             editor.value.chain().focus().setImage({ src: base64Image }).run();
-            console.log("✅ Image inserted into the editor");
         };
 
         reader.onerror = () => {
-            console.log("❌ FileReader Error");
+            prompt("❌ FileReader Error");
         };
 
-        // Read the image as base64
         reader.readAsDataURL(file);
-        return; // If a file is selected, exit here to prevent URL processing
+        return;
     }
 
-    // 2. Handle the image URL input (if no file is selected)
     const url = imageUrl.value.trim();
     if (url) {
         if (!editor.value) {
@@ -859,29 +920,24 @@ const addImage = () => {
             return;
         }
 
-        // Insert image URL into Tiptap editor
         editor.value.chain().focus().setImage({ src: url }).run();
     } else {
         console.log("❌ No file or URL provided");
     }
+
+
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
+// YOUTUBE
+const generateEmbedUrlNew = ref<{ src: string } | null>(null);
 const addYouTube = () => {
-    console.log('YouTube Video Added:', { youtubeUrl: youtubeUrl.value });
+    const url = generateEmbedUrlNew.value ? generateEmbedUrlNew.value.src : '';
+    if (editor.value && url) {
+        editor.value.chain().focus().setYoutubeVideo({ src: url }).run();
+    }
     closeModal();
 };
+
 
 
 
@@ -933,6 +989,52 @@ const generateEmbedUrl = (url: string): string => {
 
 
 const addTable = ref<HTMLElement | null>(null);
+
+
+
+
+
+const pressed1 = ref<(HTMLElement | null)>(null);
+const pressed2 = ref<(HTMLElement | null)>(null);
+const pressed3 = ref<(HTMLElement | null)>(null);
+
+
+const toggleFullscreen = () => {
+    const container = document.querySelector('.visual-weaver') as HTMLElement;
+
+    if (container) {
+        container.classList.toggle('visual-weaver-fullscreen');
+        pressed1.value?.classList.toggle("pressed");
+
+        if (container.classList.contains('visual-weaver-fullscreen')) {
+            document.addEventListener('keydown', exitFullscreenOnEsc);
+        } else {
+            document.removeEventListener('keydown', exitFullscreenOnEsc);
+        }
+    }
+};
+
+const exitFullscreenOnEsc = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+        const container = document.querySelector('.visual-weaver') as HTMLElement;
+
+        if (container && container.classList.contains('visual-weaver-fullscreen')) {
+            container.classList.remove('visual-weaver-fullscreen');
+            document.removeEventListener('keydown', exitFullscreenOnEsc);
+        }
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
 
 onMounted(() => {
     tooltips();

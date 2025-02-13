@@ -10,3 +10,7 @@ npm run dev
 
 npm prune
 npm list --json
+
+npm install -g depcheck
+depcheck
+npm uninstall lodash

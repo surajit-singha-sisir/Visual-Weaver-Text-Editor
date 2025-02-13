@@ -136,9 +136,6 @@ select {
         border-right: 1px solid $border;
       }
     }
-
-    .text-face {
-    }
   }
   .editor-body {
     position: relative;
@@ -420,5 +417,27 @@ select {
     border-left: 3px solid $table-border;
     margin: 1.5rem 0;
     padding-left: 1rem;
+  }
+  img {
+    display: block;
+    height: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+    cursor: context-menu;
+
+    &.ProseMirror-selectednode {
+      cursor: pointer;
+      outline: 3px solid $button-secondary;
+    }
+  }
+  &.ProseMirror-selectednode {
+    cursor: pointer;
+    outline: 3px solid $button-secondary;
+  }
+}
+.editor-body {
+  & iframe {
+    border: 3px dashed $button-secondary;
+    padding: 5px;
   }
 }

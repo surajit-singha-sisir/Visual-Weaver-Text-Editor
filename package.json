@@ -10,10 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@anilkumarthakur/tiptap-extension-resize-youtube": "^0.0.2",
     "@tiptap/core": "^2.11.5",
     "@tiptap/extension-blockquote": "^2.11.5",
+    "@tiptap/extension-bubble-menu": "^2.11.5",
     "@tiptap/extension-color": "^2.11.5",
     "@tiptap/extension-font-family": "^2.11.5",
+    "@tiptap/extension-heading": "^2.11.5",
     "@tiptap/extension-highlight": "^2.11.5",
     "@tiptap/extension-image": "^2.11.5",
     "@tiptap/extension-link": "^2.11.5",
@@ -27,11 +30,15 @@
     "@tiptap/extension-text-style": "^2.11.5",
     "@tiptap/extension-underline": "^2.11.5",
     "@tiptap/extension-youtube": "^2.11.5",
+    "@tiptap/pm": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "@tiptap/vue-3": "^2.11.5",
     "nuxt": "^3.15.4",
+    "react": "^19.0.0",
+    "tiptap-extension-resize-image": "^1.2.1",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "vuetify": "^3.7.12"
   },
   "devDependencies": {
     "sass": "^1.84.0",
