@@ -8,6 +8,9 @@
 
 Visual Weaver is an open-source **WYSIWYG (What You See Is What You Get) editor** for the web, built using **Nuxt.js** and powered by the **Tiptap editor**. It aims to provide a powerful and extensible rich-text editing experience for web applications.
 
+## Preview
+![image](https://github.com/user-attachments/assets/75603624-26a6-462a-9007-fef2bb88226a)
+
 ## Features
 
 ### ✅ Available Features:
