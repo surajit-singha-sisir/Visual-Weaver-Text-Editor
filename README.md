@@ -20,7 +20,7 @@ Visual Weaver is an open-source **WYSIWYG (What You See Is What You Get) editor*
   - **Subscript**
   - **Superscript**
   - **Highlight**
-  - **Unformat Styles**
+  - **Remove Styles**
 - **Paragraph Styles**:
   - **Text Alignments** (Left, Center, Right, Justify)
   - **Lists** (Bullet/Ordered)
