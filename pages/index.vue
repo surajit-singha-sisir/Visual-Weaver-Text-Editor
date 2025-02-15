@@ -4,7 +4,6 @@
             <h1 style="font-size: 2rem; border: 1px solid #3ba1f5;" class="w-100 text-center pad--10">VISUAL WEAVER
                 <p class="text--12 Gray">An Open-source Web wysiwyg editor</p>
             </h1>
-
         </div>
         <!-- VISUAL WEAVER EDITOR -->
         <!-- <textarea name="visual-weaver" class="hide" id="visual-weaver" aria-label="Visual Weaver">
